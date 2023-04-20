@@ -19,20 +19,3 @@ void parse_input(char *input, char **args)
 	}
 	args[i] = NULL;
 }
-
-/**
- * handle_exit - handles exit of the command input
- * @input: input string to parse
- * @i: incremental
- */
-void handle_exit(char *input, size_t *i)
-{
-	printf("$ ");
-	fflush(stdout);
-	if (input != NULL)
-	{
-		free(input);
-		input = NULL;
-	}
-	*i = 0;
-}

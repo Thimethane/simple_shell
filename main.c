@@ -11,8 +11,7 @@ int main(void)
 	char *args[MAX_ARGS];
 	size_t i = 0;
 	ssize_t read_bytes;
-	pid_t pid;
-	int status;
+	int ret;
 
 	while (1)
 	{
@@ -23,23 +22,17 @@ int main(void)
 		if (read_bytes == -1)
 			break;/** end of file*/
 		input = strtok(input, "\n");
-
-		parse_input(input, args);
-		if (strcmp(args[0], "exit") == 0)
+		if (strcmp(args[0], "env") == 0)
 		{
-			handle_exit(input, &i);
+			handle_env();
 			continue;
 		}
-		pid = fork();
-		if (pid < 0)
-			PRINT_ERROR("fork");
-		else if (pid == 0)
-		{
-			if (execvp(args[0], args) < 0)
-				PRINT_ERROR("execvp");
-		}
-		else
-			waitpid(pid, &status, 0);
+		parse_input(input, args);
+		handle_exit(input, &i);
+		handle_path(args);
+		ret = execute_command(args);
+		if (ret < 0)
+			continue;
 	}
 	printf("\n");
 	free(input);
