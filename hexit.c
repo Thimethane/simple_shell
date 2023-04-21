@@ -11,6 +11,8 @@ void handle_exit(char *input, size_t *i)
 	if (strcmp(input, "exit") == 0)
 	{
 		free(input);
+		printf("$ ");
+		fflush(stdout);
 		exit(EXIT_SUCCESS);
 	}
 	else
