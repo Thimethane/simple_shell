@@ -8,12 +8,22 @@
  */
 void handle_exit(char *input, size_t *i)
 {
-	if (strcmp(input, "exit") == 0)
+	int status;
+
+	if (_strcmp(input, "exit") == 0)
 	{
 		free(input);
 		printf("$ ");
 		fflush(stdout);
 		exit(EXIT_SUCCESS);
+	}
+	else if (strncmp(input, "exit ", 5) == 0)
+	{
+		status = _atoi(input + 5);
+		free(input);
+		printf("$ ");
+		fflush(stdout);
+		exit(status);
 	}
 	else
 	{

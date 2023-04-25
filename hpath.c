@@ -21,16 +21,20 @@ void handle_path(char **args)
 		if (path_env == NULL)
 		{
 			PRINT_ERROR("Error: PATH environment variable not set\n");
+			return;
 		}
 		path = strtok(path_env, ":");
 		while (path != NULL)
 		{
 			command = malloc(_strlen(path) + _strlen(args[0]) + 2);
-			sprintf(command, "%s/%s", path, args[0]);
+			_strcat(command, path);
+			_strcat(command, "/");
+			_strcat(command, args[0]);
 			if (stat(command, &st) == 0)
 			{
 				args[0] = command;
 				free(path_env);
+				return;
 			}
 			free(command);
 			path = strtok(NULL, ":");

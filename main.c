@@ -9,7 +9,7 @@ int main(void)
 {
 	char *input = NULL;
 	char *args[MAX_ARGS];
-	size_t i = 0;
+	size_t len = 0;
 	ssize_t read_bytes;
 	int ret;
 
@@ -17,18 +17,18 @@ int main(void)
 	{
 		printf("$ ");
 		fflush(stdout);
-		read_bytes = getline(&input, &i, stdin);
+		read_bytes = _getline(&input, &len, stdin);
 
 		if (read_bytes == -1)
 			break;/** end of file*/
 		input[strcspn(input, "\n")] = '\0';
-		if (strcmp(input, "exit") == 0)
+		if (_strcmp(input, "exit") == 0 || strncmp(input, "exit ", 5) == 0)
 		{
-			handle_exit(input, &i);
+			handle_exit(input, &len);
 			continue;
 		}
 		parse_input(input, args);
-		if (strcmp(args[0], "env") == 0)
+		if (_strcmp(args[0], "env") == 0)
 		{
 			handle_env();
 			continue;
@@ -40,5 +40,6 @@ int main(void)
 	}
 	printf("\n");
 	free(input);
+
 	return (0);
 }
