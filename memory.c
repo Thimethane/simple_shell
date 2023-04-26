@@ -73,3 +73,29 @@ int _atoi(char *s)
 
 	return (n);
 }
+
+/**
+ * _strcspn - gets the length of the initial segment of string
+ *
+ * @s1: the string to search
+ * @s2: the string containing the characters to exclude
+ *
+ * Return: the number of characters in the initial segment
+ */
+size_t _strcspn(const char *s1, const char *s2)
+{
+	const char *p1 = s1;
+	const char *p2 = NULL;
+
+	for (; *p1; ++p1)
+	{
+		for (p2 = s2; *p2; ++p2)
+		{
+			if (*p1 == *p2)
+				break;
+		}
+		if (*p2)
+			break;
+	}
+	return (p1 - s1);
+}

@@ -17,7 +17,7 @@ void handle_exit(char *input, size_t *i)
 		fflush(stdout);
 		exit(EXIT_SUCCESS);
 	}
-	else if (strncmp(input, "exit ", 5) == 0)
+	else if (_strncmp(input, "exit ", 5) == 0)
 	{
 		status = _atoi(input + 5);
 		free(input);

@@ -8,7 +8,7 @@
 int main(void)
 {
 	char *input = NULL;
-	char **args;
+	char *args[MAX_ARGS];
 	size_t len = 0;
 	ssize_t read_bytes;
 	int ret;
@@ -21,29 +21,28 @@ int main(void)
 
 		if (read_bytes == -1)
 			break;/** end of file*/
-		input[strcspn(input, "\n")] = '\0';
-		if (_strcmp(input, "exit") == 0 || strncmp(input, "exit ", 5) == 0)
+		input[_strcspn(input, "\n")] = '\0';
+		if (_strcmp(input, "exit") == 0 || _strncmp(input, "exit ", 5) == 0)
 		{
 			handle_exit(input, &len);
 			continue;
 		}
-		args = parse_input(input);
-		if (_strcmp(args[0], ("env")) == 0)
+		parse_input(input, args);
+		if (_strcmp(args[0], "env") == 0)
 		{
-			handle_env(args);
+			handle_env();
 			continue;
 		}
-		if (_strcmp(args[0], "cd") == 0)
+		if (handle_path(args))
 		{
-			cd_builtin(args);
-			continue;
+			ret = execute_command(args);
+			if (ret < 0)
+				continue;
+			free(args[0]);
 		}
-		ret = execute_command(args);
-		if (ret < 0)
-			continue;
 	}
 	printf("\n");
-	free(args);
 	free(input);
+
 	return (0);
 }

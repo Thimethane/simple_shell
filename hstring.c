@@ -1,11 +1,45 @@
 #include "shell.h"
 
 /**
+ * execute_command - executes the command with the given arguments
+ *
+ * @args: an array of arguments for the command
+ *
+ * Return: 0 on success, -1 on failure
+ */
+int execute_command(char **args)
+{
+	pid_t pid;
+	int status;
+
+	pid = fork();
+	if (pid < 0)
+	{
+		PRINT_ERROR("fork");
+		return (-1);
+	}
+	else if (pid == 0)
+	{
+		if (execvp(args[0], args) < 0)
+		{
+			PRINT_ERROR("execvp");
+			return (-1);
+		}
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+	}
+
+	return (0);
+}
+
+/**
  * _strlen - returns length of the string
  * @s: string
  * Return: length
  */
-int _strlen(const char *s)
+int _strlen(char *s)
 {
 	int length = 0;
 
@@ -25,8 +59,6 @@ int _strlen(const char *s)
  */
 int _strcmp(char *s1, char *s2)
 {
-	if (s1 == NULL || s2 == NULL)
-		return (-1);
 	while (*s1 != '\0' && *s1 == *s2)
 	{
 		s1++;
@@ -36,79 +68,46 @@ int _strcmp(char *s1, char *s2)
 }
 
 /**
- * *_strcat - concatenates two strings
- * @dest:destination
- * @src:source
- * Return:pointer
- */
-char *_strcat(char *dest, char *src)
-{
-	char *dest_end = dest;
-
-	while (*dest_end != '\0')
-	{
-		dest_end++;
-	}
-
-	while (*src != '\0')
-	{
-		*dest_end = *src;
-		dest_end++;
-		src++;
-	}
-
-	*dest_end = '\0';
-	return (dest);
-}
-/**
- * _strspn - counts the length of input string segment
- * @s: input string
- * @accept: A delimeter specifie
+ * _strncmp - compares two strings up to a given number
  *
- * Return - 0 (Success)
- */
-size_t _strspn(const char *s, const char *accept)
-{
-	const char *p;
-	const char *a;
-	size_t count = 0;
-
-	for (p = s; *p != '\0'; ++p)
-	{
-		for (a = accept; *a != '\0'; ++a)
-		{
-			if (*p == *a)
-				break;
-			if (*a == '\0')
-				return (count);
-			++count;
-		}
-	}
-	return (count);
-}
-
-/**
- * _strdup - duplicates string
- * @src: string to be duplicated
+ * @s1: first string to compare
+ * @s2: second string to compare
+ * @n: maximum number of characters to compare
  *
- * Return: 0 on Success
+ * Return: an integer less than, equal to, or greater than
  */
-char *_strdup(const char *src)
+int _strncmp(const char *s1, const char *s2, size_t n)
 {
-	char *dst;
-	size_t len;
 	size_t i;
 
-	len = 0;
-	while (src[len] != '\0')
-		len++;
+	for (i = 0; i < n && s1[i] && s2[i]; i++)
+	{
+		if (s1[i] != s2[i])
+			return (s1[i] - s2[i]);
+	}
+	if (i == n)
+		return 0;
 
-	dst = malloc(sizeof(char) * (len + 1));
+	return (s1[i] - s2[i]);
+}
 
-	if (dst == NULL)
-		return (NULL);
-
-	for (i = 0; i <= len; i++)
-		dst[i] = src[i];
-	return (dst);
+/**
+ * _strchr - Locate character in string.
+ *
+ * @s: String to search for character
+ * @c: Character to locate.
+ *
+ * Return: Pointer to the first occurrence of the character c
+ */
+char *_strchr(char *s, char c)
+{
+	while (*s != '\0')
+	{
+		if (*s == c)
+			return (s);
+		s++;
+	}
+	if (*s == c)
+		return (s);
+	return (NULL);
 }
