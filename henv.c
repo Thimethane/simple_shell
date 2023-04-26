@@ -3,13 +3,23 @@
 /**
  * handle_env - prints the current environment
  */
-void handle_env(void)
+void handle_env(char **args)
 {
-	int i = 0;
+	int i = 0, j = 0;
 
-	while (environ[i] != NULL)
+	for (i = 0; args[i] != NULL; i++)
 	{
-		printf("%s\n", environ[i]);
-		i++;
+		if (strcmp(args[i], "env") == 0 ||
+			strcmp(args[i], "environ") == 0 ||
+			strcmp(args[i], "printenv") == 0)
+		{
+			while (environ[i] != NULL)
+			{
+				printf("%s\n", environ[i]);
+				j++;
+			}
+			break;
+			
+		}
 	}
 }

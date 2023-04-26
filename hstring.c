@@ -1,45 +1,11 @@
 #include "shell.h"
 
 /**
- * execute_command - executes the command with the given arguments
- *
- * @args: an array of arguments for the command
- *
- * Return: 0 on success, -1 on failure
- */
-int execute_command(char **args)
-{
-	pid_t pid;
-	int status;
-
-	pid = fork();
-	if (pid < 0)
-	{
-		PRINT_ERROR("fork");
-		return (-1);
-	}
-	else if (pid == 0)
-	{
-		if (execvp(args[0], args) < 0)
-		{
-			PRINT_ERROR("execvp");
-			return (-1);
-		}
-	}
-	else
-	{
-		waitpid(pid, &status, 0);
-	}
-
-	return (0);
-}
-
-/**
  * _strlen - returns length of the string
  * @s: string
  * Return: length
  */
-int _strlen(char *s)
+int _strlen(const char *s)
 {
 	int length = 0;
 
@@ -59,6 +25,8 @@ int _strlen(char *s)
  */
 int _strcmp(char *s1, char *s2)
 {
+	if (s1 == NULL || s2 == NULL)
+		return (-1);
 	while (*s1 != '\0' && *s1 == *s2)
 	{
 		s1++;
@@ -91,4 +59,56 @@ char *_strcat(char *dest, char *src)
 
 	*dest_end = '\0';
 	return (dest);
+}
+/**
+ * _strspn - counts the length of input string segment
+ * @s: input string
+ * @accept: A delimeter specifie
+ *
+ * Return - 0 (Success)
+ */
+size_t _strspn(const char *s, const char *accept)
+{
+	const char *p;
+	const char *a;
+	size_t count = 0;
+
+	for (p = s; *p != '\0'; ++p)
+	{
+		for (a = accept; *a != '\0'; ++a)
+		{
+			if (*p == *a)
+				break;
+			if (*a == '\0')
+				return (count);
+			++count;
+		}
+	}
+	return (count);
+}
+
+/**
+ * _strdup - duplicates string
+ * @src: string to be duplicated
+ *
+ * Return: 0 on Success
+ */
+char *_strdup(const char *src)
+{
+	char *dst;
+	size_t len;
+	size_t i;
+
+	len = 0;
+	while (src[len] != '\0')
+		len++;
+
+	dst = malloc(sizeof(char) * (len + 1));
+
+	if (dst == NULL)
+		return (NULL);
+
+	for (i = 0; i <= len; i++)
+		dst[i] = src[i];
+	return (dst);
 }

@@ -14,13 +14,11 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 	ssize_t read;
 	size_t len = 0;
 
-	if (*lineptr == NULL)
+	if ((*lineptr) == NULL)
 	{
 		*lineptr = malloc(*n);
-		if (*lineptr == NULL)
-		{
+		if ((*lineptr) == NULL)
 			return (-1);
-		}
 	}
 	while ((read = getline(lineptr, &len, stream)) != -1)
 	{
@@ -35,10 +33,13 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 			*lineptr = _realloc(*lineptr, len, *n);
 			if (*lineptr == NULL)
 			{
+				free(*lineptr);
 				return (-1);
 			}
 		}
 	len += read;
 	}
-return (len);
+	if (*lineptr == NULL)
+		free(*lineptr);
+	return (len);
 }

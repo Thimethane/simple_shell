@@ -8,7 +8,7 @@
 int main(void)
 {
 	char *input = NULL;
-	char *args[MAX_ARGS];
+	char **args;
 	size_t len = 0;
 	ssize_t read_bytes;
 	int ret;
@@ -27,19 +27,23 @@ int main(void)
 			handle_exit(input, &len);
 			continue;
 		}
-		parse_input(input, args);
-		if (_strcmp(args[0], "env") == 0)
+		args = parse_input(input);
+		if (_strcmp(args[0], ("env")) == 0)
 		{
-			handle_env();
+			handle_env(args);
 			continue;
 		}
-		handle_path(args);
+		if (_strcmp(args[0], "cd") == 0)
+		{
+			cd_builtin(args);
+			continue;
+		}
 		ret = execute_command(args);
 		if (ret < 0)
 			continue;
 	}
 	printf("\n");
+	free(args);
 	free(input);
-
 	return (0);
 }

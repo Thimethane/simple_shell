@@ -10,7 +10,12 @@ void handle_path(char **args)
 {
 	char *path, *command, *path_env;
 	struct stat st;
-
+	
+	if (args == NULL || args[0] == NULL)
+	{
+		PRINT_ERROR("Error: invalid arguments\n");
+		return;
+	}
 	if (args[0][0] == '/' || args[0][0] == '.')
 	{
 		path = args[0];
@@ -21,9 +26,11 @@ void handle_path(char **args)
 		if (path_env == NULL)
 		{
 			PRINT_ERROR("Error: PATH environment variable not set\n");
+			free(path_env);
 			return;
 		}
-		path = strtok(path_env, ":");
+		path_env = _strdup(path_env);
+		path = _strtok(path_env, ":");
 		while (path != NULL)
 		{
 			command = malloc(_strlen(path) + _strlen(args[0]) + 2);
@@ -37,8 +44,9 @@ void handle_path(char **args)
 				return;
 			}
 			free(command);
-			path = strtok(NULL, ":");
+			path = _strtok(NULL, ":");
 		}
 		PRINT_ERROR("Error: command not found\n");
+		free(path_env);
 	}
 }
