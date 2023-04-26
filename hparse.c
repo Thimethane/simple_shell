@@ -1,4 +1,4 @@
-_strcmp(input, "exit") == 0 || _strncmp(input, "exit ", 5) == 0#include "shell.h"
+#include "shell.h"
 
 /**
  * parse_input - parses the input into an array of strings
