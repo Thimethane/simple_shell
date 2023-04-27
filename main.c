@@ -5,44 +5,34 @@
  *
  * Return: always 0 on success
  */
-int main(void)
+int main()
 {
 	char *input = NULL;
-	char *args[MAX_ARGS];
-	size_t len = 0;
-	ssize_t read_bytes;
-	int ret;
+	size_t input_size = 0;
+	size_t input_length = 0;
+	char **args;
 
 	while (1)
 	{
 		printf("$ ");
 		fflush(stdout);
-		read_bytes = _getline(&input, &len, stdin);
 
-		if (read_bytes == -1)
-			break;/** end of file*/
-		input[_strcspn(input, "\n")] = '\0';
-		if (_strcmp(input, "exit") == 0 || _strncmp(input, "exit ", 5) == 0)
+		if (getline(&input, &input_size, stdin) == -1)
 		{
-			handle_exit(input, &len);
-			continue;
+			printf("\n");
+			break;
 		}
-		parse_input(input, args);
-		if (_strcmp(args[0], "env") == 0)
+		input_length = _strlen(input);
+		if (input_length > 0 && input[input_length - 1] == '\n')
+			input[input_length - 1] = '\0';
+
+		args = tokenize_input(input);
+		if (args[0] != NULL)
 		{
-			handle_env();
-			continue;
-		}
-		if (handle_path(args))
-		{
-			ret = execute_command(args);
-			if (ret < 0)
-				continue;
-			free(args[0]);
+			handle_command_with_arguments(args);
+			free_args(args);
 		}
 	}
-	printf("\n");
 	free(input);
-
 	return (0);
 }

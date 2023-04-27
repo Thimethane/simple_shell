@@ -12,25 +12,19 @@
 #include <stdbool.h>
 #include <sys/stat.h>
 
-#define DELIMITER "\n\t"
+#define DELIMETER "\n\t"
 #define MAX_ARGS 10
 #define READ_SIZE 1024
+#define MAX_TOKENS 64
 #define PRINT_ERROR(msg)  (perror(msg), exit(EXIT_FAILURE))
 
 extern char **environ;
+
 int _strlen(char *s);
-int _strcmp(char *s1, char *s2);
-char *_strcat(char *dest, char *src);
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-int _atoi(char *s);
-size_t _strcspn(const char *s1, const char *s2);
-int _strncmp(const char *s1, const char *s2, size_t n);
-char *_strchr(char *s, char c);
-void parse_input(char *input, char **args);
-void handle_exit(char *input, size_t *i);
-int handle_path(char **args);
-void handle_env(void);
-int execute_command(char **args);
-ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
+char *_strdup(const char *src);
+char **tokenize_input(char *input);
+int execute_command(char *command, char **args);
+void handle_command_with_arguments(char **tokens);
+void free_args(char **tokens);
 
 #endif
