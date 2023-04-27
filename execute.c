@@ -2,7 +2,7 @@
 
 /**
  * execute_command - executes the command with the given arguments
- *
+ * @command: command prompt
  * @args: an array of arguments for the command
  *
  * Return: 0 on success, -1 on failure

@@ -2,64 +2,56 @@
 
 /**
  * handle_command_with_arguments - handle commands with their arguments
- * 					and PATH at the same time
- *
- * @tokens: Input command
+ * @args: Input command
  *
  * Return: No return value.
  */
-void handle_command_with_arguments(char **tokens)
+void handle_command_with_arguments(char **args)
 {
-	char *path = getenv("PATH");
-	char *path_token;
-	size_t command_path_length, i;
-	char *command_path;
-	char *path_copy;
-	char *command = tokens[0];
-	char **args;
+	pid_t pid;
+	int status;
+	char *path, *token, *env_path = getenv("PATH");
 
-	args = malloc((MAX_TOKENS + 1) * sizeof(char *));
-	if (path == NULL)
+	if (strcmp(args[0], "exit") == 0)
+		exit(0);
+	pid = fork();
+	if (pid == 0)
 	{
-		printf("Error: PATH not found.\n");
-		return;
-	}
-	path_copy = _strdup(path);
-	if ((args == NULL) || (path_copy == NULL))
-	{
-		printf("Error: Memory allocation failed.\n");
-		return;
-	}
-	for (i = 0; tokens[i] != NULL && i < MAX_TOKENS; i++)
-		args[i] = tokens[i];
-	args[i] = NULL;
-	path_token = strtok(path_copy, ":");
-	while (path_token != NULL)
-	{
-		command_path_length = _strlen(path_token) + _strlen(command) + 2;
-		command_path = malloc(command_path_length);
-		if (command_path == NULL)
+		if (args[0][0] == '/')
 		{
-			printf("Error: Memory allocation failed.\n");
-			free(path_copy);
-			return;
+			execve(args[0], args, NULL);
 		}
-		snprintf(command_path, command_path_length, "%s/%s", path_token, command);
-		if (access(command_path, X_OK) == 0)
+		else
 		{
-			execute_command(command_path, args);
-			return;
+			token = strtok(env_path, ":");
+			while (token != NULL)
+			{
+				path = malloc(strlen(token) + strlen(args[0]) + 2);
+				sprintf(path, "%s/%s", token, args[0]);
+				execve(path, args, NULL);
+				free(path);
+				token = strtok(NULL, ":");
+			}
 		}
-		path_token = strtok(NULL, ":");
+		printf("Command not found: %s\n", args[0]);
+		exit(1);
 	}
-	printf("Command not found: %s\n", command);
-	free(command_path);
-	free(path_copy);
-	free(args);
+	else if (pid < 0)
+	{
+		perror("Fork failed");
+	}
+	else
+	{
+		do
+
+		{
+			waitpid(pid, &status, WUNTRACED);
+		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
+	}
 }
 
 /**
- * free_args: it releases the allocated memory arguments
+ * free_args - it releases the allocated memory arguments
  *
  * @tokens: tokens of input command
  *

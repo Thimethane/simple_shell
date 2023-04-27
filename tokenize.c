@@ -2,8 +2,7 @@
 
 /**
  * tokenize_input - tokenizes the input strings
- * @args: Input strings to be tokenized.
- * 
+ * @input: Input strings to be tokenized.
  * Return: Returns tokens of strings.
  */
 char **tokenize_input(char *input)

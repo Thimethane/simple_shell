@@ -16,6 +16,8 @@
 #define MAX_ARGS 10
 #define READ_SIZE 1024
 #define MAX_TOKENS 64
+#define TOKEN_BUFSIZE 64
+#define TOKEN_DELIM " \t\r\n\a"
 #define PRINT_ERROR(msg)  (perror(msg), exit(EXIT_FAILURE))
 
 extern char **environ;
