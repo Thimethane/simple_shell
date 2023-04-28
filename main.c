@@ -8,8 +8,7 @@
 int main(void)
 {
 	char *input = NULL;
-	size_t input_size = 0;
-	size_t input_length = 0;
+	size_t input_size = 0, input_length = 0;
 	char **args;
 
 	while (1)
@@ -26,25 +25,23 @@ int main(void)
 		input_length = _strlen(input);
 		if (input_length > 0 && input[input_length - 1] == '\n')
 			input[input_length - 1] = '\0';
-		input_size = input_length + 1;
-		if (strcmp(input, "exit") == 0 || strncmp(input, "exit ", 5) == 0)
-                {
-                        handle_exit(input, &input_length);
-                        continue;
-		}
-
-		args = tokenize_input(input);
-		if (strcmp(args[0], "env") == 0)
+		if (_strcmp(input, "exit") == 0 || _strncmp(input, "exit ", 5) == 0)
 		{
-			handle_env();
-			/*free_args(args);*/
+			handle_exit(input, &input_length);
 			continue;
 		}
-		/**args = split_line(input);*/
+		args = tokenize_input(input);
+		if (_strcmp(args[0], "env") == 0)
+		{
+			handle_env();
+			continue;
+		}
 		if (args[0] != NULL)
 		{
 			handle_command_with_arguments(args);
-			/**free_args(args);*/
+			free(args);
+			/*if (handle_command_with_arguments(args) != 0)
+				exit(1);*/
 		}
 	}
 	free(input);

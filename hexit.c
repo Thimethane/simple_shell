@@ -10,15 +10,17 @@ void handle_exit(char *input, size_t *i)
 {
 	int status;
 
-	if (strcmp(input, "exit") == 0)
+	if (_strcmp(input, "exit") == 0)
 	{
 		free(input);
 		exit(EXIT_SUCCESS);
 	}
-	else if (strncmp(input, "exit ", 5) == 0)
+	else if (_strncmp(input, "exit ", 5) == 0)
 	{
-		status = atoi(input + 5);
+		status = _atoi(input + 5);
 		free(input);
+		if (status < 0)
+			status = abs(status);
 		exit(status);
 	}
 	else

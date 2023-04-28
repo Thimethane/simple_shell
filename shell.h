@@ -24,6 +24,10 @@ extern char **environ;
 
 int _strlen(char *s);
 char *_strdup(const char *src);
+int _strncmp(const char *s1, const char *s2, size_t n);
+int _strcmp(char *s1, char *s2);
+char *_strchr(char *s, char c);
+int _atoi(char *s);
 char **tokenize_input(char *input);
 int execute_command(char *command, char **args);
 void handle_command_with_arguments(char **tokens);

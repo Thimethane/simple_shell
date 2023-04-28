@@ -38,3 +38,104 @@ char *_strdup(const char *src)
 		dst[i] = src[i];
 	return (dst);
 }
+
+/**
+ * _strcmp - compares two strings
+ * @s1:string 1
+ * @s2:string 2
+ * Return:strings
+ */
+int _strcmp(char *s1, char *s2)
+{
+	while (*s1 != '\0' && *s1 == *s2)
+	{
+		s1++;
+		s2++;
+	}
+	return (*s1 - *s2);
+}
+
+/**
+ * _strncmp - compares two strings up to a given number
+ *
+ * @s1: first string to compare
+ * @s2: second string to compare
+ * @n: maximum number of characters to compare
+ *
+ * Return: an integer less than, equal to, or greater than
+ */
+int _strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t i;
+
+	for (i = 0; i < n && s1[i] && s2[i]; i++)
+	{
+		if (s1[i] != s2[i])
+			return (s1[i] - s2[i]);
+	}
+	if (i == n)
+		return 0;
+
+	return (s1[i] - s2[i]);
+}
+
+/**
+ * _strchr - Locate character in string.
+ *
+ * @s: String to search for character
+ * @c: Character to locate.
+ *
+ * Return: Pointer to the first occurrence of the character c
+ */
+char *_strchr(char *s, char c)
+{
+	while (*s != '\0')
+	{
+		if (*s == c)
+			return (s);
+		s++;
+	}
+	if (*s == c)
+		return (s);
+	return (NULL);
+}
+
+/**
+ * _atoi - convert a string to an integer
+ * @s:string
+ * Return:results
+ */
+int _atoi(char *s)
+{
+	int i = 0;
+	int d = 0;
+	int n = 0;
+	int len = 0;
+	int f = 0;
+	int digit = 0;
+
+	while (s[len] != '\0')
+		len++;
+
+	while (i < len && f == 0)
+	{
+		if (s[i] == '-')
+			++d;
+		if (s[i] >= '0' && s[i] <= '9')
+		{
+			digit = s[i] - '0';
+			if (d % 2)
+				digit = -digit;
+			n = n * 10 + digit;
+			f = 1;
+			if (s[i + 1] < '0' || s[i + 1] > '9')
+				break;
+			f = 0;
+		}
+		i++;
+	}
+	if (f == 0)
+		return (0);
+
+	return (n);
+}

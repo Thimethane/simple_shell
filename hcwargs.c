@@ -9,7 +9,7 @@
 void handle_command_with_arguments(char **args)
 {
 	pid_t pid;
-	int status;
+	int status = 0;
 	char *token, *env_path = getenv("PATH");
 	char full_path[PATH_MAX];
 
@@ -38,6 +38,7 @@ void handle_command_with_arguments(char **args)
 	else if (pid < 0)
 	{
 		perror("Fork failed");
+		status = 1;
 	}
 	else
 	{
@@ -46,6 +47,8 @@ void handle_command_with_arguments(char **args)
 		{
 			waitpid(pid, &status, WUNTRACED);
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
+		if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+			exit(WEXITSTATUS(status));
 	}
 }
 
