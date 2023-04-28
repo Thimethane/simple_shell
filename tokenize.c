@@ -7,23 +7,32 @@
  */
 char **tokenize_input(char *input)
 {
-	char **tokens = (char **)malloc(MAX_TOKENS * sizeof(char *));
-	char **token;
-	size_t num_tokens = 0;
+	char *token_str, quote_char;
+	int token_count;
+    char **tokens = malloc(MAX_TOKENS * sizeof(char *));
 
-	if (tokens == NULL)
-	{
-		fprintf(stderr, "Memory allocation error\n");
-		exit(1);
-	}
-	*tokens = strtok(input, DELIMETER);
-	token = tokens;
-	while (token != NULL && num_tokens < MAX_TOKENS)
-	{
-		token++;
-		*token = strtok(NULL, DELIMETER);
-		num_tokens++;
-	}
-	*token = NULL;
-	return (tokens);
+    if (tokens == NULL) {
+        fprintf(stderr, "Memory allocation error\n");
+        exit(EXIT_FAILURE);
+    }
+
+    token_count = 0;
+    token_str = strtok(input, DELIMITER);
+
+    while (token_str != NULL && token_count < MAX_TOKENS - 1) {
+        if (token_str[0] == '\'' || token_str[0] == '\"') {
+            quote_char = token_str[0];
+            token_str++;
+            tokens[token_count] = token_str;
+            token_count++;
+            token_str = strtok(NULL, &quote_char);
+        } else {
+            tokens[token_count] = token_str;
+            token_count++;
+            token_str = strtok(NULL, DELIMITER);
+        }
+    }
+
+    tokens[token_count] = NULL;
+    return tokens;
 }

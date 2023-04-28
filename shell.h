@@ -12,12 +12,12 @@
 #include <stdbool.h>
 #include <sys/stat.h>
 
-#define DELIMETER "\n\t"
+#define DELIMITER " \t\r\n\a"
 #define MAX_ARGS 10
 #define READ_SIZE 1024
-#define MAX_TOKENS 64
+#define MAX_TOKENS 100
 #define TOKEN_BUFSIZE 64
-#define TOKEN_DELIM " \t\r\n\a"
+#define MAX_BUFFER 1024
 #define PRINT_ERROR(msg)  (perror(msg), exit(EXIT_FAILURE))
 
 extern char **environ;
@@ -27,6 +27,8 @@ char *_strdup(const char *src);
 char **tokenize_input(char *input);
 int execute_command(char *command, char **args);
 void handle_command_with_arguments(char **tokens);
+void handle_env(void);
 void free_args(char **tokens);
-
+ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 #endif

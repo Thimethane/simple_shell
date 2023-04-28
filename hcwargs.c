@@ -14,6 +14,7 @@ void handle_command_with_arguments(char **args)
 
 	if (strcmp(args[0], "exit") == 0)
 		exit(0);
+
 	pid = fork();
 	if (pid == 0)
 	{
@@ -26,7 +27,7 @@ void handle_command_with_arguments(char **args)
 			token = strtok(env_path, ":");
 			while (token != NULL)
 			{
-				path = malloc(strlen(token) + strlen(args[0]) + 2);
+				path = malloc(_strlen(token) + _strlen(args[0]) + 2);
 				sprintf(path, "%s/%s", token, args[0]);
 				execve(path, args, NULL);
 				free(path);
