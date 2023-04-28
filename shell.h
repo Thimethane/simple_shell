@@ -36,5 +36,5 @@ void handle_exit(char *input, size_t *i);
 void free_args(char **tokens);
 void handle_EOF(char *input);
 char *shell_getline(void);
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+int copy_and_execute(char *src_file, char *dest_file, char **args);
 #endif
