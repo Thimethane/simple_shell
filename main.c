@@ -8,7 +8,7 @@
 int main(void)
 {
 	char *input = NULL;
-	size_t input_length = 0;
+	size_t input_length = 0, input_size = 0;
 	char **args;
 
 	while (1)
@@ -16,8 +16,7 @@ int main(void)
 		if (isatty(STDIN_FILENO))
 			printf("$ ");
 		fflush(stdout);
-		input = shell_getline();
-		if (input == NULL)
+		if (getline(&input, &input_size, stdin) == -1)
 		{
 			handle_EOF(input);
 			break;
