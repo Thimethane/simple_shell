@@ -13,9 +13,6 @@ void handle_command_with_arguments(char **args)
 	char *token, *env_path = getenv("PATH");
 	char full_path[PATH_MAX];
 
-	if (strcmp(args[0], "exit") == 0)
-		exit(0);
-
 	pid = fork();
 	if (pid == 0)
 	{

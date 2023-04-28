@@ -16,11 +16,11 @@ int main(void)
 	{
 		if (isatty(STDIN_FILENO))
 			printf("$ ");
-		/**fflush(stdout);*/
+		fflush(stdout);
 
 		if (getline(&input, &input_size, stdin) == -1)
 		{
-			/**printf("\n");*/
+			/*printf("\n");*/
 			break;
 		}
 		input_length = _strlen(input);
@@ -30,17 +30,16 @@ int main(void)
 
 		args = tokenize_input(input);
 		if (strcmp(args[0], "env") == 0)
-                {
-                        handle_env();
-                        continue;
-                }
+		{
+			handle_env();
+			continue;
+		}
 		/**args = split_line(input);*/
 		if (args[0] != NULL)
 		{
 			handle_command_with_arguments(args);
 			/**free_args(args);*/
 		}
-		fflush(stdout);
 	}
 	free(input);
 	return (0);
