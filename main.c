@@ -14,12 +14,13 @@ int main(void)
 
 	while (1)
 	{
-		printf("$ ");
-		fflush(stdout);
+		if (isatty(STDIN_FILENO))
+			printf("$ ");
+		/**fflush(stdout);*/
 
 		if (getline(&input, &input_size, stdin) == -1)
 		{
-			printf("\n");
+			/**printf("\n");*/
 			break;
 		}
 		input_length = _strlen(input);
@@ -39,6 +40,7 @@ int main(void)
 			handle_command_with_arguments(args);
 			/**free_args(args);*/
 		}
+		fflush(stdout);
 	}
 	free(input);
 	return (0);

@@ -10,13 +10,13 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <stdbool.h>
+#include <limits.h>
 #include <sys/stat.h>
 
 #define DELIMITER " \t\r\n\a"
 #define MAX_ARGS 10
 #define READ_SIZE 1024
 #define MAX_TOKENS 100
-#define TOKEN_BUFSIZE 64
 #define MAX_BUFFER 1024
 #define PRINT_ERROR(msg)  (perror(msg), exit(EXIT_FAILURE))
 
