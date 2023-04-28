@@ -25,10 +25,8 @@ void handle_command_with_arguments(char **args)
 			token = strtok(env_path, ":");
 			while (token != NULL)
 			{
-				/**path = malloc(_strlen(token) + _strlen(args[0]) + 2);*/
 				sprintf(full_path, "%s/%s", token, args[0]);
 				execve(full_path, args, NULL);
-				/**free(path);*/
 				token = strtok(NULL, ":");
 			}
 		}

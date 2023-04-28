@@ -7,7 +7,7 @@
  */
 char **tokenize_input(char *input)
 {
-	char *token_str, quote_char;
+	char *token_str, *quote_char;
 	int token_count;
 	char **tokens = malloc(MAX_TOKENS * sizeof(char *));
 
@@ -23,19 +23,35 @@ char **tokenize_input(char *input)
 	{
 		if (token_str[0] == '\'' || token_str[0] == '\"')
 		{
-			quote_char = token_str[0];
+			quote_char = strchr(token_str + 1, token_str[0]);
+			if (quote_char == NULL)
+			{
+				fprintf(stderr, "Missing closing quote\n");
+				free(tokens);
+				exit(EXIT_FAILURE);
+			}
+			quote_char[0] = '\0';
 			token_str++;
 			tokens[token_count] = token_str;
 			token_count++;
-			token_str = strtok(NULL, &quote_char);
+			token_str = quote_char + 1;
 		}
 		else
 		{
+			/*quote_char = token_str[0];*/
+			/*token_str++;*/
 			tokens[token_count] = token_str;
 			token_count++;
 			token_str = strtok(NULL, DELIMITER);
 		}
 	}
+		/*else
+		{
+			tokens[token_count] = token_str;
+			token_count++;
+			token_str = strtok(NULL, DELIMITER);
+		}
+	}*/
 	tokens[token_count] = NULL;
 	return (tokens);
 }

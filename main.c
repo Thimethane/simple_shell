@@ -19,7 +19,7 @@ int main(void)
 
 		if (getline(&input, &input_size, stdin) == -1)
 		{
-			/*printf("\n");*/
+			handle_EOF(input);
 			break;
 		}
 		input_length = _strlen(input);
@@ -40,8 +40,6 @@ int main(void)
 		{
 			handle_command_with_arguments(args);
 			free(args);
-			/*if (handle_command_with_arguments(args) != 0)
-				exit(1);*/
 		}
 	}
 	free(input);
