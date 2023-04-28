@@ -35,6 +35,6 @@ void handle_env(void);
 void handle_exit(char *input, size_t *i);
 void free_args(char **tokens);
 void handle_EOF(char *input);
-ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
+char *shell_getline(void);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 #endif
