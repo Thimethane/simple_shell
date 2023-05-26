@@ -13,7 +13,7 @@
 #include <limits.h>
 #include <sys/stat.h>
 
-#define DELIMITER " \t\r\n\a"
+#define DELIMITER " \t \r \n \a ; && ||"
 #define MAX_ARGS 10
 #define READ_SIZE 1024
 #define MAX_TOKENS 100
