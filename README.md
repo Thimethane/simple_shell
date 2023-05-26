@@ -1,5 +1,5 @@
 0x16. C - Simple Shell
-Project to be done in teams of 2 people (my team: Sylvie Shimwa Uwase, Timothee RINGUYENEZA)
+Project to be done in teams of 2 people (Timothee RINGUYENEZA)
 General
 Who designed and implemented the original Unix operating system
 Who wrote the first version of the UNIX shell
