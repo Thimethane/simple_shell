@@ -1,46 +1,72 @@
-#include "shell.h"
+#include "main.h"
+/**
+ * free_data - frees data structure
+ *
+ * @datash: data structure
+ * Return: no return
+ */
+void free_data(data_shell *datash)
+{
+	unsigned int i;
+
+	for (i = 0; datash->_environ[i]; i++)
+	{
+		free(datash->_environ[i]);
+	}
+
+	free(datash->_environ);
+	free(datash->pid);
+}
 
 /**
- * main - entry point
+ * set_data - Initialize data structure
  *
- * Return: always 0 on success
+ * @datash: data structure
+ * @av: argument vector
+ * Return: no return
  */
-int main(void)
+void set_data(data_shell *datash, char **av)
 {
-	char *input = NULL;
-	size_t input_length = 0, input_size = 0;
-	char **args;
+	unsigned int i;
 
-	while (1)
+	datash->av = av;
+	datash->input = NULL;
+	datash->args = NULL;
+	datash->status = 0;
+	datash->counter = 1;
+
+	for (i = 0; environ[i]; i++)
+		;
+
+	datash->_environ = malloc(sizeof(char *) * (i + 1));
+
+	for (i = 0; environ[i]; i++)
 	{
-		if (isatty(STDIN_FILENO))
-			printf("$ ");
-		fflush(stdout);
-		if (getline(&input, &input_size, stdin) == -1)
-		{
-			handle_EOF(input);
-			break;
-		}
-		input_length = _strlen(input);
-		if (input_length > 0 && input[input_length - 1] == '\n')
-			input[input_length - 1] = '\0';
-		if (_strcmp(input, "exit") == 0 || _strncmp(input, "exit ", 5) == 0)
-		{
-			handle_exit(input, &input_length);
-			continue;
-		}
-		args = tokenize_input(input);
-		if (_strcmp(args[0], "env") == 0)
-		{
-			handle_env();
-			continue;
-		}
-		if (args[0] != NULL)
-		{
-			handle_command_with_arguments(args);
-			free(args);
-		}
+		datash->_environ[i] = _strdup(environ[i]);
 	}
-	free(input);
-	return (0);
+
+	datash->_environ[i] = NULL;
+	datash->pid = aux_itoa(getpid());
+}
+
+/**
+ * main - Entry point
+ *
+ * @ac: argument count
+ * @av: argument vector
+ *
+ * Return: 0 on success.
+ */
+int main(int ac, char **av)
+{
+	data_shell datash;
+	(void) ac;
+
+	signal(SIGINT, get_sigint);
+	set_data(&datash, av);
+	shell_loop(&datash);
+	free_data(&datash);
+	if (datash.status < 0)
+		return (255);
+	return (datash.status);
 }
